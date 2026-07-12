@@ -1,24 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- THIS IS THE MAGIC LINE THAT MAKES IT FIT PHONES -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crested SS 2005 Class - Member Login</title>
     <style>
+        /* RESET default margins */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: Arial, sans-serif;
             background: linear-gradient(135deg, #1a3a5c, #2d6a9f);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            padding: 20px;
             margin: 0;
         }
         .login-box {
             background: white;
-            padding: 40px;
+            padding: 30px 25px;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            width: 350px;
+            width: 100%;
+            max-width: 400px; /* This stops it from getting too wide on tablets */
             text-align: center;
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .login-box h1 {
             color: #1a3a5c;
@@ -32,40 +47,55 @@
         }
         .login-box input {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             margin: 8px 0;
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 16px;
             box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        .login-box input:focus {
+            border-color: #1a3a5c;
+            outline: none;
+            box-shadow: 0 0 5px rgba(26, 58, 92, 0.3);
         }
         .login-box button {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             background: #1a3a5c;
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
+            font-size: 18px;
             font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
         }
         .login-box button:hover {
             background: #2d6a9f;
         }
         .error {
-            color: red;
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 8px;
             font-size: 14px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #f5c6cb;
+            text-align: left;
         }
         .links {
-            margin-top: 15px;
+            margin-top: 20px;
             font-size: 14px;
         }
         .links a {
             color: #1a3a5c;
             text-decoration: none;
             font-weight: bold;
+            display: inline-block;
+            margin: 5px 0;
         }
         .links a:hover {
             text-decoration: underline;
@@ -83,7 +113,9 @@
         <p class="subtitle">Member Savings Portal</p>
         
         {% if form.errors %}
-            <p class="error">Invalid username or password. Please try again.</p>
+            <div class="error">
+                ❌ Invalid username or password. Please try again.
+            </div>
         {% endif %}
         
         <form method="post">
@@ -95,7 +127,7 @@
         
         <div class="links">
             <p><a href="{% url 'register' %}">Create an Account (Sign Up)</a></p>
-            <p><a href="{% url 'password_reset' %}">Forgot Password?</a></p>
+            <p><a href="{% url 'custom_password_reset' %}">Forgot Password?</a></p>
         </div>
     </div>
 </body>
