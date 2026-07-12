@@ -18,6 +18,8 @@ ALLOWED_HOSTS = ['*']  # Allow all hosts for now (restrict later)
 CSRF_TRUSTED_ORIGINS = ['https://web-production-63626.up.railway.app']
 
 INSTALLED_APPS = [
+     'admin_interface',
+    'colorfield',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
