@@ -1,4 +1,3 @@
-
 """
 Django settings for sacco_project project.
 """
@@ -13,7 +12,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-default-key-change-me
 
 # WARNING: Turn DEBUG off in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
- ALLOWED_HOSTS = ['*']
+
+ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = ['https://web-production-63626.up.railway.app']
 
@@ -30,7 +30,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # <-- Add this
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -59,7 +59,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'sacco_project.wsgi.application'
 
-# --- DATABASE: Use PostgreSQL on Railway, SQLite locally ---
 DATABASES = {
     'default': dj_database_url.config(
         default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
@@ -79,14 +78,13 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# --- Static Files (CSS, JS) ---
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'  # <-- Where collectstatic puts files
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# CUSTOM SETTINGS
+# Custom Settings
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login/'
