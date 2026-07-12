@@ -99,3 +99,5 @@ ADMIN_SITE_TITLE = "Crested SS 2005 Class"
 # Password Reset (prints link to console)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 PASSWORD_RESET_TIMEOUT = 14400
+ADMIN_SITE_HEADER = "Crested SS 2005 Class - Administration"
+ADMIN_SITE_TITLE = "Crested SS 2005 Class"
