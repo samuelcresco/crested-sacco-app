@@ -13,19 +13,17 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-default-key-change-me
 
 # WARNING: Turn DEBUG off in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+ ALLOWED_HOSTS = ['*']
 
-ALLOWED_HOSTS = ['*']  # Allow all hosts for now (restrict later)
 CSRF_TRUSTED_ORIGINS = ['https://web-production-63626.up.railway.app']
 
 INSTALLED_APPS = [
-    'admin_interface',
-    'colorfield',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'whitenoise.runserver_nostatic',  # <-- Add this for static files
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'core',
 ]
