@@ -8,5 +8,5 @@ urlpatterns = [
     path('logout/', views.custom_logout, name='logout'),
     path('register/', views.register, name='register'),
     path('reset-password/', views.custom_password_reset, name='custom_password_reset'),
-    path('', views.dashboard, name='dashboard'),
+    path('', views.dashboard, name='dashboard'),  # Root URL maps to dashboard
 ]
