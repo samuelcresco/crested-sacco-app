@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -26,20 +27,22 @@ def dashboard(request):
             <tr>
                 <td>{t.date_created.strftime('%d %b %Y')}</td>
                 <td>{t.get_transaction_type_display()}</td>
-                <td>{t.amount}</td>
+                <td>UGX {t.amount}</td>
             </tr>
             """
         
         if not transaction_rows:
             transaction_rows = '<tr><td colspan="3">No transactions yet.</td></tr>'
         
-        # Build the FULL HTML page with a GET logout link (no CSRF needed)
+        # Build the FULL HTML page
         html_content = f"""
         <!DOCTYPE html>
         <html>
         <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Crested SS 2005 Class - Dashboard</title>
             <style>
+                * {{ margin: 0; padding: 0; box-sizing: border-box; }}
                 body {{ font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }}
                 .card {{ max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }}
                 .brand {{ color: #1a3a5c; margin-bottom: 0; font-size: 28px; }}
@@ -60,7 +63,7 @@ def dashboard(request):
                 <p>Member #: {member.member_number}</p>
                 <hr>
                 <h3>Current Balance</h3>
-                <div class="balance">KES {account.balance}</div>
+                <div class="balance">UGX {account.balance}</div>
                 
                 <h3>Recent Transactions</h3>
                 <table>
