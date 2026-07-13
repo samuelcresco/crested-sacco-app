@@ -1,168 +1,38 @@
+{% extends "admin/login.html" %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crested SS 2005 Class - Admin Login</title>
-    <style>
-        /* REMOVE THEME TOGGLES */
-        .theme-toggle { display: none !important; }
-        #header .theme-toggle { display: none !important; }
-        .theme-toggle-wrapper { display: none !important; }
-        
-        /* RESET */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: linear-gradient(135deg, #0d1b2a, #1a3a5c);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        /* HEADER */
-        #header {
-            background: linear-gradient(135deg, #0d1b2a, #1a3a5c) !important;
-            padding: 15px 30px !important;
-            text-align: center;
-            border-radius: 12px 12px 0 0;
-        }
-        #header h1 {
-            color: white !important;
-            font-size: 22px !important;
-            font-weight: 600 !important;
-        }
-        
-        /* LOGIN BOX */
-        .login {
-            background: white !important;
-            border-radius: 12px !important;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2) !important;
-            padding: 30px !important;
-            max-width: 400px !important;
-            margin: 0 auto !important;
-        }
-        .login .form-row {
-            margin-bottom: 15px !important;
-        }
-        .login .form-row label {
-            display: block !important;
-            font-weight: 600 !important;
-            margin-bottom: 5px !important;
-            color: #333 !important;
-        }
-        .login .form-row input {
-            padding: 12px !important;
-            border-radius: 8px !important;
-            border: 1px solid #ddd !important;
-            width: 100% !important;
-            box-sizing: border-box !important;
-            font-size: 16px !important;
-        }
-        .login .form-row input:focus {
-            border-color: #1a3a5c !important;
-            box-shadow: 0 0 5px rgba(26,58,92,0.2) !important;
-            outline: none !important;
-        }
-        .login .submit-row input {
-            background: #1a3a5c !important;
-            border: none !important;
-            padding: 12px !important;
-            border-radius: 8px !important;
-            font-weight: 600 !important;
-            font-size: 16px !important;
-            width: 100% !important;
-            cursor: pointer !important;
-            color: white !important;
-        }
-        .login .submit-row input:hover {
-            background: #2d6a9f !important;
-        }
-        
-        .show-password-container {
-            text-align: left;
-            margin-top: 8px;
-        }
-        .show-password-container input[type="checkbox"] {
-            width: auto !important;
-            margin-right: 5px !important;
-            display: inline-block !important;
-        }
-        .show-password-container label {
-            font-size: 14px;
-            color: #555;
-            cursor: pointer;
-        }
-        .forgot-password-link {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 14px;
-        }
-        .forgot-password-link a {
-            color: #1a3a5c;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        .forgot-password-link a:hover {
-            text-decoration: underline;
-        }
-        
-        /* Remove Django's default theme toggles */
-        .theme-toggle-wrapper { display: none !important; }
-        .theme-toggle { display: none !important; }
-    </style>
-</head>
-<body>
-    <div class="login">
-        <!-- HEADER -->
-        <div id="header">
-            <h1>Crested SS 2005 Class - Banking System</h1>
-        </div>
-        
-        <!-- LOGIN FORM -->
-        <div id="content-main">
-            <form action="/admin/login/" method="post" id="login-form">
-                {% csrf_token %}
-                
-                <div class="form-row">
-                    <label for="id_username">Username</label>
-                    <input type="text" name="username" id="id_username" required>
-                </div>
-                
-                <div class="form-row">
-                    <label for="id_password">Password</label>
-                    <input type="password" name="password" id="id_password" required>
-                    
-                    <div class="show-password-container">
-                        <input type="checkbox" id="show-admin-password" onclick="toggleAdminPassword()">
-                        <label for="show-admin-password">Show Password</label>
-                    </div>
-                </div>
-                
-                <div class="submit-row">
-                    <input type="submit" value="Log in">
-                </div>
-            </form>
-            
-            <!-- FORGOT PASSWORD LINK -->
-            <div class="forgot-password-link">
-                <a href="/accounts/password_reset/">Forgot Password?</a>
-            </div>
-        </div>
-    </div>
+{% block content %}
+{{ block.super }}
 
-    <script>
-        function toggleAdminPassword() {
-            var x = document.getElementById("id_password");
-            if (x.type === "password") {
-                x.type = "text";
-            } else {
-                x.type = "password";
-            }
+<!-- Add Forgot Password link below the login form -->
+<div style="text-align: center; margin-top: 15px;">
+    <a href="/accounts/password_reset/" style="color: #1a3a5c; text-decoration: none; font-weight: 500;">
+        Forgot Password?
+    </a>
+</div>
+
+<script>
+    // Add Show Password toggle
+    document.addEventListener('DOMContentLoaded', function() {
+        var passwordField = document.getElementById('id_password');
+        if (passwordField) {
+            var wrapper = passwordField.parentNode;
+            var container = document.createElement('div');
+            container.style.cssText = 'text-align: left; margin-top: 8px;';
+            var checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = 'show-password';
+            checkbox.style.cssText = 'width: auto; margin-right: 5px;';
+            var label = document.createElement('label');
+            label.htmlFor = 'show-password';
+            label.textContent = 'Show Password';
+            label.style.cssText = 'font-size: 14px; color: #555; cursor: pointer;';
+            container.appendChild(checkbox);
+            container.appendChild(label);
+            wrapper.appendChild(container);
+            checkbox.addEventListener('change', function() {
+                passwordField.type = this.checked ? 'text' : 'password';
+            });
         }
-    </script>
-</body>
-</html>
+    });
+</script>
+{% endblock %}
