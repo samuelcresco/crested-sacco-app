@@ -11,14 +11,20 @@ from django.utils.encoding import force_bytes, force_str
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from django.db.models import Sum
 
-# --- DASHBOARD VIEW ---
+# --- DASHBOARD VIEW WITH REPORTS ---
 @login_required
 def dashboard(request):
     try:
         member = request.user.member
         account = SavingsAccount.objects.get(member=member)
-        transactions = Transaction.objects.filter(account=account).order_by('-date_created')[:5]
+        transactions = Transaction.objects.filter(account=account).order_by('-date_created')[:10]
+        
+        # ----- REPORT CALCULATIONS -----
+        total_deposits = Transaction.objects.filter(account=account, transaction_type='DEP').aggregate(Sum('amount'))['amount__sum'] or 0
+        total_withdrawals = Transaction.objects.filter(account=account, transaction_type='WTH').aggregate(Sum('amount'))['amount__sum'] or 0
+        total_transactions = Transaction.objects.filter(account=account).count()
         
         # Build transaction rows
         transaction_rows = ""
@@ -27,14 +33,17 @@ def dashboard(request):
             <tr>
                 <td>{t.date_created.strftime('%d %b %Y')}</td>
                 <td>{t.get_transaction_type_display()}</td>
-                <td>UGX {t.amount}</td>
+                <td>UGX {t.amount:,.2f}</td>
             </tr>
             """
         
         if not transaction_rows:
             transaction_rows = '<tr><td colspan="3">No transactions yet.</td></tr>'
         
-        # Build the FULL HTML page
+        # Get full name from Member profile
+        full_name = f"{member.first_name} {member.last_name}".strip() or member.user.get_full_name() or member.user.username
+        
+        # Build the FULL HTML page with Reports
         html_content = f"""
         <!DOCTYPE html>
         <html>
@@ -43,37 +52,86 @@ def dashboard(request):
             <title>Crested SS 2005 Class - Dashboard</title>
             <style>
                 * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-                body {{ font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }}
-                .card {{ max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }}
+                body {{ font-family: Arial, sans-serif; background: #f4f6f9; padding: 20px; }}
+                
+                .container {{ max-width: 800px; margin: auto; }}
+                
+                .card {{ background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin-bottom: 20px; }}
+                
+                .header {{ display: flex; justify-content: space-between; align-items: center; }}
+                .logout-link {{ color: red; text-decoration: none; font-weight: bold; }}
+                
                 .brand {{ color: #1a3a5c; margin-bottom: 0; font-size: 28px; }}
-                .sub {{ font-size: 14px; color: #666; margin-top: 5px; }}
-                .balance {{ font-size: 2.5em; color: #2c3e50; font-weight: bold; }}
-                table {{ width: 100%; border-collapse: collapse; margin-top: 20px; }}
-                th {{ background: #3498db; color: white; padding: 10px; text-align: left; }}
-                td {{ padding: 10px; border-bottom: 1px solid #ddd; }}
-                .logout-link {{ float: right; color: red; text-decoration: none; font-size: 14px; }}
-                .logout-link:hover {{ text-decoration: underline; }}
+                .sub {{ font-size: 18px; color: #333; margin-top: 5px; font-weight: 500; }}
+                .member-id {{ font-size: 14px; color: #888; margin-top: 5px; }}
+                
+                .balance-box {{ background: linear-gradient(135deg, #1a3a5c, #2d6a9f); color: white; padding: 20px; border-radius: 10px; text-align: center; }}
+                .balance-box .label {{ font-size: 14px; opacity: 0.8; }}
+                .balance-box .amount {{ font-size: 2.5em; font-weight: bold; }}
+                
+                .report-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 15px 0; }}
+                .report-card {{ background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: center; }}
+                .report-card .num {{ font-size: 22px; font-weight: bold; color: #1a3a5c; }}
+                .report-card .label {{ font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }}
+                
+                table {{ width: 100%; border-collapse: collapse; margin-top: 15px; }}
+                th {{ background: #e9ecef; color: #333; padding: 10px; text-align: left; font-weight: 600; }}
+                td {{ padding: 10px; border-bottom: 1px solid #dee2e6; }}
+                
+                @media (max-width: 600px) {{
+                    .report-grid {{ grid-template-columns: 1fr 1fr; }}
+                    .balance-box .amount {{ font-size: 1.8em; }}
+                }}
             </style>
         </head>
         <body>
-            <div class="card">
-                <a href="/logout/" class="logout-link">Logout</a>
-                <h1 class="brand">Crested SS 2005 Class</h1>
-                <p class="sub">Welcome, {member.user.username}</p>
-                <p>Member #: {member.member_number}</p>
-                <hr>
-                <h3>Current Balance</h3>
-                <div class="balance">UGX {account.balance}</div>
+            <div class="container">
+                <div class="card">
+                    <div class="header">
+                        <h1 class="brand">🏦 Crested SS 2005 Class</h1>
+                        <a href="/logout/" class="logout-link">Logout</a>
+                    </div>
+                    <p class="sub">👋 Welcome, {full_name}</p>
+                    <p class="member-id">Member #: {member.member_number}</p>
+                </div>
                 
-                <h3>Recent Transactions</h3>
-                <table>
-                    <tr>
-                        <th>Date</th>
-                        <th>Type</th>
-                        <th>Amount</th>
-                    </tr>
-                    {transaction_rows}
-                </table>
+                <!-- Balance Card -->
+                <div class="card balance-box">
+                    <div class="label">Current Savings Balance</div>
+                    <div class="amount">UGX {account.balance:,.2f}</div>
+                </div>
+                
+                <!-- Reports Section -->
+                <div class="card">
+                    <h3 style="color: #1a3a5c; margin-bottom: 10px;">📊 Your Savings Report</h3>
+                    <div class="report-grid">
+                        <div class="report-card">
+                            <div class="num">UGX {total_deposits:,.2f}</div>
+                            <div class="label">Total Deposits</div>
+                        </div>
+                        <div class="report-card">
+                            <div class="num">UGX {total_withdrawals:,.2f}</div>
+                            <div class="label">Total Withdrawals</div>
+                        </div>
+                        <div class="report-card">
+                            <div class="num">{total_transactions}</div>
+                            <div class="label">Total Transactions</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Transactions -->
+                <div class="card">
+                    <h3 style="color: #1a3a5c; margin-bottom: 10px;">🕒 Recent Transactions</h3>
+                    <table>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                        </tr>
+                        {transaction_rows}
+                    </table>
+                </div>
             </div>
         </body>
         </html>
@@ -91,13 +149,15 @@ def custom_logout(request):
     return redirect('login')
 
 
-# --- REGISTRATION VIEW ---
+# --- REGISTRATION VIEW (With First Name & Last Name) ---
 def register(request):
     error_message = None
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         member_number = request.POST.get('member_number')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
         
         try:
             member = Member.objects.get(member_number=member_number)
@@ -107,6 +167,8 @@ def register(request):
             else:
                 user = User.objects.create_user(username=username, password=password)
                 member.user = user
+                member.first_name = first_name
+                member.last_name = last_name
                 member.save()
                 login(request, user)
                 return redirect('dashboard')
@@ -151,6 +213,8 @@ def custom_password_reset(request):
         'error': error_message,
         'success': success_message,
     })
+
+
 # --- LOAN DASHBOARD VIEW ---
 @login_required
 def loans(request):
@@ -158,7 +222,7 @@ def loans(request):
         member = request.user.member
         account = SavingsAccount.objects.get(member=member)
         
-        # Loan Limit: 3x of savings (you can change this multiplier)
+        # Loan Limit: 3x of savings
         loan_limit = account.balance * 3
         
         active_loans = Loan.objects.filter(member=member, status='ACTIVE').order_by('next_due_date')

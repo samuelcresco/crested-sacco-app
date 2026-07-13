@@ -6,9 +6,13 @@ from datetime import datetime, timedelta
 class Member(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     member_number = models.CharField(max_length=20, unique=True)
+    first_name = models.CharField(max_length=100, blank=True)
+    last_name = models.CharField(max_length=100, blank=True)
     phone_number = models.CharField(max_length=15)
 
     def __str__(self):
+        if self.first_name or self.last_name:
+            return f"{self.member_number} - {self.first_name} {self.last_name}"
         return f"{self.member_number} - {self.user.username if self.user else 'No User'}"
 
 # --- SAVINGS ACCOUNT ---
@@ -44,13 +48,13 @@ class Loan(models.Model):
     
     member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='loans')
     amount = models.DecimalField(max_digits=12, decimal_places=2)
-    interest_rate = models.DecimalField(max_digits=5, decimal_places=2, default=10.00)  # Percentage (e.g., 10%)
+    interest_rate = models.DecimalField(max_digits=5, decimal_places=2, default=10.00)
     total_repayable = models.DecimalField(max_digits=12, decimal_places=2)
     amount_paid = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='ACTIVE')
     date_taken = models.DateTimeField(auto_now_add=True)
     weekly_installment = models.DecimalField(max_digits=12, decimal_places=2)
-    total_weeks = models.IntegerField()  # Total weekly installments
+    total_weeks = models.IntegerField()
     weeks_paid = models.IntegerField(default=0)
     next_due_date = models.DateTimeField()
 

@@ -1,23 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crested SS 2005 Class - Sign Up</title>
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: Arial, sans-serif;
             background: linear-gradient(135deg, #1a3a5c, #2d6a9f);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            padding: 20px;
             margin: 0;
         }
         .signup-box {
             background: white;
-            padding: 40px;
+            padding: 30px 25px;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            width: 350px;
+            width: 100%;
+            max-width: 400px;
             text-align: center;
         }
         .signup-box h1 {
@@ -27,7 +31,7 @@
         }
         .signup-box input {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             margin: 8px 0;
             border: 1px solid #ddd;
             border-radius: 8px;
@@ -36,7 +40,7 @@
         }
         .signup-box button {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             background: #1a3a5c;
             color: white;
             border: none;
@@ -49,9 +53,13 @@
             background: #2d6a9f;
         }
         .error {
-            color: red;
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 8px;
             font-size: 14px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #f5c6cb;
         }
         .login-link {
             margin-top: 15px;
@@ -62,10 +70,15 @@
             text-decoration: none;
             font-weight: bold;
         }
+        .logo {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
     <div class="signup-box">
+        <div class="logo">🏦</div>
         <h1>Crested SS 2005 Class</h1>
         <p>Member Registration</p>
         
@@ -75,7 +88,9 @@
         
         <form method="post">
             {% csrf_token %}
-            <input type="text" name="member_number" placeholder="Your Member Number (e.g., 0001)" required>
+            <input type="text" name="member_number" placeholder="Your Member Number (e.g., CR2005/001)" required>
+            <input type="text" name="first_name" placeholder="First Name" required>
+            <input type="text" name="last_name" placeholder="Last Name" required>
             <input type="text" name="username" placeholder="Choose a Username" required>
             <input type="password" name="password" placeholder="Choose a Password" required>
             <button type="submit">Create Account</button>
@@ -85,4 +100,4 @@
         </div>
     </div>
 </body>
-</html
+</html>
