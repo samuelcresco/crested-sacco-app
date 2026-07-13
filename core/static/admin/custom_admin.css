@@ -1,0 +1,346 @@
+
+/* ============================================
+   CRESTED SS 2005 CLASS - BANKING STYLE ADMIN
+   ============================================ */
+
+/* --- RESET & BASE --- */
+body {
+    background: #f0f2f5 !important;
+    font-family: 'Segoe UI', Arial, sans-serif !important;
+}
+
+/* --- HEADER --- */
+#header {
+    background: linear-gradient(135deg, #0d1b2a, #1a3a5c) !important;
+    color: white !important;
+    padding: 12px 30px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15) !important;
+    border-bottom: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+
+#header h1 {
+    color: white !important;
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.5px !important;
+}
+
+#header h1 a {
+    color: white !important;
+    text-decoration: none !important;
+}
+
+#header #user-tools {
+    color: rgba(255,255,255,0.85) !important;
+    font-size: 13px !important;
+}
+
+#header #user-tools a {
+    color: #ffd700 !important;
+    font-weight: 600 !important;
+    padding: 5px 10px !important;
+    border-radius: 5px !important;
+    transition: all 0.3s !important;
+}
+
+#header #user-tools a:hover {
+    background: rgba(255,255,255,0.15) !important;
+    color: #fff !important;
+}
+
+/* --- HIDE THEME TOGGLES (THE "BLACK THINGS") --- */
+.theme-toggle {
+    display: none !important;
+}
+#header .theme-toggle {
+    display: none !important;
+}
+.theme-toggle-wrapper {
+    display: none !important;
+}
+
+/* --- BREADCRUMBS --- */
+.breadcrumbs {
+    background: #fff !important;
+    border-bottom: 1px solid #e9ecef !important;
+    padding: 12px 30px !important;
+    font-size: 14px !important;
+    color: #555 !important;
+}
+
+.breadcrumbs a {
+    color: #1a3a5c !important;
+    font-weight: 500 !important;
+}
+
+/* --- SIDEBAR --- */
+#nav-sidebar {
+    background: #fff !important;
+    border-right: 1px solid #e9ecef !important;
+    padding: 20px 0 !important;
+}
+
+#nav-sidebar .module {
+    background: transparent !important;
+    padding: 0 15px !important;
+}
+
+#nav-sidebar .module h2 {
+    background: transparent !important;
+    color: #0d1b2a !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px !important;
+    padding: 10px 15px !important;
+    border-bottom: 2px solid #e9ecef !important;
+    margin-bottom: 5px !important;
+}
+
+#nav-sidebar .module a {
+    color: #2c3e50 !important;
+    padding: 8px 15px !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    transition: all 0.2s !important;
+    display: block !important;
+}
+
+#nav-sidebar .module a:hover {
+    background: #e9ecef !important;
+    color: #1a3a5c !important;
+}
+
+#nav-sidebar .module a.current {
+    background: #1a3a5c !important;
+    color: white !important;
+    box-shadow: 0 2px 8px rgba(26,58,92,0.2) !important;
+}
+
+/* --- DASHBOARD CARDS --- */
+.dashboard #content {
+    padding: 20px 30px !important;
+}
+
+.dashboard .module {
+    background: white !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06) !important;
+    border: none !important;
+    overflow: hidden !important;
+    margin-bottom: 25px !important;
+}
+
+.dashboard .module h2 {
+    background: #f8f9fa !important;
+    color: #0d1b2a !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    padding: 15px 20px !important;
+    border-bottom: 2px solid #e9ecef !important;
+    margin: 0 !important;
+}
+
+.dashboard .module table {
+    width: 100% !important;
+}
+
+.dashboard .module table th {
+    background: #f8f9fa !important;
+    color: #2c3e50 !important;
+    font-weight: 600 !important;
+    padding: 12px 20px !important;
+    font-size: 13px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+.dashboard .module table td {
+    padding: 12px 20px !important;
+    border-bottom: 1px solid #f1f3f5 !important;
+    font-size: 14px !important;
+}
+
+.dashboard .module table td a {
+    color: #1a3a5c !important;
+    font-weight: 500 !important;
+}
+
+.dashboard .module table td a:hover {
+    color: #2d6a9f !important;
+}
+
+/* --- ADD / CHANGE LINKS --- */
+.object-tools {
+    margin: 10px 20px !important;
+}
+
+.object-tools a {
+    background: #1a3a5c !important;
+    color: white !important;
+    border-radius: 8px !important;
+    padding: 8px 18px !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    transition: all 0.3s !important;
+    box-shadow: 0 2px 8px rgba(26,58,92,0.15) !important;
+}
+
+.object-tools a:hover {
+    background: #2d6a9f !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(26,58,92,0.25) !important;
+}
+
+/* --- BUTTONS --- */
+.submit-row input.default, .button.default {
+    background: #1a3a5c !important;
+    border: none !important;
+    padding: 10px 30px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    transition: all 0.3s !important;
+}
+
+.submit-row input.default:hover, .button.default:hover {
+    background: #2d6a9f !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(26,58,92,0.25) !important;
+}
+
+.button {
+    background: #6c757d !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 8px 20px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s !important;
+}
+
+.button:hover {
+    background: #5a6268 !important;
+    transform: translateY(-2px) !important;
+}
+
+/* --- CHANGE LIST (Tables) --- */
+#changelist {
+    background: white !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06) !important;
+    padding: 20px !important;
+}
+
+#result_list {
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+
+#result_list thead th {
+    background: #f8f9fa !important;
+    color: #0d1b2a !important;
+    font-weight: 600 !important;
+    padding: 12px 15px !important;
+    font-size: 13px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+#result_list tbody tr {
+    transition: background 0.2s !important;
+}
+
+#result_list tbody tr:hover {
+    background: #f8f9fa !important;
+}
+
+#result_list tbody td {
+    padding: 10px 15px !important;
+    border-bottom: 1px solid #f1f3f5 !important;
+}
+
+/* --- FILTERS --- */
+#changelist-filter {
+    background: white !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06) !important;
+    border: none !important;
+    padding: 15px !important;
+}
+
+#changelist-filter h3 {
+    color: #0d1b2a !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    border-bottom: 2px solid #e9ecef !important;
+    padding-bottom: 8px !important;
+}
+
+#changelist-filter li.selected a {
+    color: #1a3a5c !important;
+    font-weight: 600 !important;
+}
+
+/* --- PAGINATION --- */
+.paginator {
+    background: #f8f9fa !important;
+    border-radius: 8px !important;
+    padding: 12px !important;
+    margin-top: 15px !important;
+}
+
+.paginator a {
+    background: white !important;
+    color: #1a3a5c !important;
+    border-radius: 6px !important;
+    padding: 5px 14px !important;
+    transition: all 0.2s !important;
+    border: 1px solid #e9ecef !important;
+}
+
+.paginator a:hover {
+    background: #1a3a5c !important;
+    color: white !important;
+    border-color: #1a3a5c !important;
+}
+
+.paginator .this-page {
+    background: #1a3a5c !important;
+    color: white !important;
+    border-radius: 6px !important;
+    padding: 5px 14px !important;
+    font-weight: 600 !important;
+}
+
+/* --- LINKS --- */
+a:link, a:visited {
+    color: #1a3a5c !important;
+}
+
+a:hover {
+    color: #2d6a9f !important;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 767px) {
+    #header {
+        flex-direction: column !important;
+        padding: 10px 15px !important;
+        text-align: center !important;
+    }
+    #header h1 {
+        font-size: 18px !important;
+    }
+    #header #user-tools {
+        margin-top: 8px !important;
+    }
+    .dashboard #content {
+        padding: 10px !important;
+    }
+    .dashboard .module {
+        border-radius: 8px !important;
+    }
+}

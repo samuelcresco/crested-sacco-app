@@ -4,59 +4,74 @@
 {% block extrahead %}
 {{ block.super }}
 <style>
-    /* HIDE THE MESSY THEME TOGGLES (THE "BLACK THINGS") */
-    #header .theme-toggle {
-        display: none !important;
-    }
-    .theme-toggle {
-        display: none !important;
-    }
-    /* CLEAN UP THE LAYOUT */
+    /* REMOVE THEME TOGGLES */
+    .theme-toggle { display: none !important; }
+    #header .theme-toggle { display: none !important; }
+    .theme-toggle-wrapper { display: none !important; }
+    
+    /* HEADER */
     #header {
-        background: #1a3a5c !important;
-        color: white !important;
-        padding: 15px 20px !important;
+        background: linear-gradient(135deg, #0d1b2a, #1a3a5c) !important;
+        padding: 15px 30px !important;
     }
     #header h1 {
         color: white !important;
         font-size: 22px !important;
+        font-weight: 600 !important;
     }
-    .login .submit-row input {
-        background: #1a3a5c !important;
-        border-radius: 8px !important;
-        padding: 10px 25px !important;
-        font-weight: bold !important;
+    
+    /* LOGIN BOX */
+    .login {
+        background: white !important;
+        border-radius: 12px !important;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1) !important;
+        padding: 30px !important;
+        max-width: 400px !important;
+        margin: 50px auto !important;
     }
-    .login .submit-row input:hover {
-        background: #2d6a9f !important;
-    }
-    .form-row {
+    .login .form-row {
         margin-bottom: 15px !important;
-    }
-    .show-password-container {
-        text-align: left;
-        margin-top: 8px;
-        margin-bottom: 10px;
-    }
-    .show-password-container input[type="checkbox"] {
-        width: auto;
-        margin-right: 5px;
-        display: inline-block;
-    }
-    .show-password-container label {
-        font-size: 14px;
-        color: #555;
-        cursor: pointer;
-        display: inline-block;
     }
     .login .form-row input {
         padding: 12px !important;
         border-radius: 8px !important;
         border: 1px solid #ddd !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
     .login .form-row input:focus {
         border-color: #1a3a5c !important;
-        box-shadow: 0 0 5px rgba(26,58,92,0.3) !important;
+        box-shadow: 0 0 5px rgba(26,58,92,0.2) !important;
+        outline: none !important;
+    }
+    .login .submit-row input {
+        background: #1a3a5c !important;
+        border: none !important;
+        padding: 12px !important;
+        border-radius: 8px !important;
+        font-weight: 600 !important;
+        font-size: 16px !important;
+        width: 100% !important;
+        cursor: pointer !important;
+    }
+    .login .submit-row input:hover {
+        background: #2d6a9f !important;
+    }
+    
+    /* SHOW PASSWORD */
+    .show-password-container {
+        text-align: left;
+        margin-top: 8px;
+    }
+    .show-password-container input[type="checkbox"] {
+        width: auto !important;
+        margin-right: 5px !important;
+        display: inline-block !important;
+    }
+    .show-password-container label {
+        font-size: 14px;
+        color: #555;
+        cursor: pointer;
     }
 </style>
 {% endblock %}
@@ -68,16 +83,15 @@
         
         <div class="form-row">
             {{ form.username.errors }}
-            <label for="id_username" style="font-weight:600;">Username</label>
+            <label for="id_username" style="font-weight:600; display:block; margin-bottom:5px;">Username</label>
             {{ form.username }}
         </div>
         
         <div class="form-row">
             {{ form.password.errors }}
-            <label for="id_password" style="font-weight:600;">Password</label>
+            <label for="id_password" style="font-weight:600; display:block; margin-bottom:5px;">Password</label>
             {{ form.password }}
             
-            <!-- SHOW PASSWORD TOGGLE -->
             <div class="show-password-container">
                 <input type="checkbox" id="show-admin-password" onclick="toggleAdminPassword()">
                 <label for="show-admin-password">Show Password</label>
