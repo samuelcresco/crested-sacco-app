@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crested SS 2005 Class - Loans</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f4f6f9; padding: 20px; }
+        .container { max-width: 800px; margin: auto; }
+        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin-bottom: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; }
+        .logout-link { color: red; text-decoration: none; font-weight: bold; }
+        .brand { color: #1a3a5c; font-size: 28px; }
+        .nav a { text-decoration: none; color: #1a3a5c; font-weight: bold; margin-right: 15px; }
+
+        .limit-box { background: linear-gradient(135deg, #28a745, #218838); color: white; padding: 20px; border-radius: 10px; text-align: center; }
+        .limit-box .label { font-size: 14px; opacity: 0.8; }
+        .limit-box .amount { font-size: 2em; font-weight: bold; }
+
+        .loan-card { border-left: 5px solid #1a3a5c; padding-left: 15px; margin-bottom: 15px; }
+        .loan-card .status { display: inline-block; padding: 5px 10px; border-radius: 5px; font-size: 12px; font-weight: bold; }
+        .status-active { background: #ffc107; color: #333; }
+        .status-paid { background: #28a745; color: white; }
+        .status-defaulted { background: #dc3545; color: white; }
+        .status-overdue { background: #dc3545; color: white; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { background: #e9ecef; color: #333; padding: 10px; text-align: left; }
+        td { padding: 10px; border-bottom: 1px solid #dee2e6; }
+
+        .btn { background: #1a3a5c; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: inline-block; }
+        .btn:hover { background: #2d6a9f; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card header">
+        <div>
+            <h1 class="brand">🏦 Crested SS 2005 Class</h1>
+            <span>Welcome, {{ member.user.get_full_name|default:member.user.username }}</span>
+        </div>
+        <a href="/logout/" class="logout-link">Logout</a>
+    </div>
+
+    <div class="card" style="display: flex; gap: 15px; flex-wrap: wrap;">
+        <a href="/" style="color:#1a3a5c; font-weight:bold;">📊 Dashboard</a>
+        <a href="/loans/" style="color:#1a3a5c; font-weight:bold; border-bottom:3px solid #1a3a5c;">💰 Loans</a>
+    </div>
+
+    <!-- Loan Limit -->
+    <div class="card limit-box">
+        <div class="label">💰 YOUR LOAN LIMIT</div>
+        <div class="amount">UGX {{ loan_limit|floatformat:2 }}</div>
+        <div style="font-size: 14px; opacity: 0.8;">(Based on your savings balance of UGX {{ account.balance|floatformat:2 }})</div>
+    </div>
+
+    <!-- Active Loans -->
+    <div class="card">
+        <h3>📋 Active Loans</h3>
+        {% if active_loans %}
+            {% for loan in active_loans %}
+            <div class="loan-card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <strong>Amount:</strong> UGX {{ loan.amount|floatformat:2 }}<br>
+                        <strong>Remaining:</strong> UGX {{ loan.remaining_balance|floatformat:2 }}<br>
+                        <strong>Weekly Installment:</strong> UGX {{ loan.weekly_installment|floatformat:2 }}<br>
+                        <strong>Due Date:</strong> {{ loan.next_due_date|date:"d M Y" }}
+                    </div>
+                    <div>
+                        {% if loan.is_overdue %}
+                            <span class="status status-overdue">🚨 OVERDUE</span>
+                        {% else %}
+                            <span class="status status-active">ACTIVE</span>
+                        {% endif %}
+                        <br><br>
+                        <span style="font-size:12px; color:#888;">Progress: {{ loan.weeks_paid }}/{{ loan.total_weeks }} weeks</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>You have no active loans. You are eligible for up to UGX {{ loan_limit|floatformat:2 }}.</p>
+            <a href="#" class="btn" style="background: #1a3a5c; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: inline-block; margin-top: 10px;">Apply for a Loan</a>
+            <p style="font-size:12px; color:#888; margin-top:5px;">Contact your SACCO admin to apply.</p>
+        {% endif %}
+    </div>
+
+    <!-- Loan History -->
+    <div class="card">
+        <h3>📜 Loan History</h3>
+        {% if loan_history %}
+        <table>
+            <tr><th>Date</th><th>Amount</th><th>Repaid</th><th>Status</th></tr>
+            {% for loan in loan_history %}
+            <tr>
+                <td>{{ loan.date_taken|date:"d M Y" }}</td>
+                <td>UGX {{ loan.amount|floatformat:2 }}</td>
+                <td>UGX {{ loan.amount_paid|floatformat:2 }}</td>
+                <td>
+                    {% if loan.status == 'ACTIVE' %}
+                        <span class="status status-active">Active</span>
+                    {% elif loan.status == 'PAID' %}
+                        <span class="status status-paid">Paid</span>
+                    {% else %}
+                        <span class="status status-defaulted">Defaulted</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No previous loans.</p>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>

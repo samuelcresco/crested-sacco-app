@@ -151,3 +151,26 @@ def custom_password_reset(request):
         'error': error_message,
         'success': success_message,
     })
+# --- LOAN DASHBOARD VIEW ---
+@login_required
+def loans(request):
+    try:
+        member = request.user.member
+        account = SavingsAccount.objects.get(member=member)
+        
+        # Loan Limit: 3x of savings (you can change this multiplier)
+        loan_limit = account.balance * 3
+        
+        active_loans = Loan.objects.filter(member=member, status='ACTIVE').order_by('next_due_date')
+        loan_history = Loan.objects.filter(member=member).order_by('-date_taken')
+        
+        context = {
+            'member': member,
+            'account': account,
+            'loan_limit': loan_limit,
+            'active_loans': active_loans,
+            'loan_history': loan_history,
+        }
+        return render(request, 'loans.html', context)
+    except Exception as e:
+        return HttpResponse(f"<h1>Error</h1><p>{str(e)}</p>")
