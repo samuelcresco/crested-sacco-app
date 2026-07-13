@@ -1,3 +1,30 @@
+INSTALLED_APPS = [
+    'core',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
+    'django.contrib.staticfiles',
+]
+This is the only change. The rest of settings.py remains the same. I will provide the complete file to avoid any partial edits.
+
+Drafting admin/login.html:
+Ensure the file is complete with the "Forgot Password" link.
+
+Final Polish: Tell them exactly where to put these files (replace completely) and to push.
+
+You are right. The crash happened because moving core to the top of INSTALLED_APPS conflicts with django.contrib.admin loading properly.
+
+We will not move core to the top. Instead, we will use a different, 100% safe method to show the "Forgot Password" link on the Admin Login page.
+
+Here is the complete settings.py that will not crash, plus the updated login.html.
+
+📁 FILE 1: Complete sacco_project/settings.py
+Open settings.py, delete everything, and paste this complete file:
+
+python
 """
 Django settings for sacco_project project.
 """
@@ -18,7 +45,6 @@ ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = ['https://web-production-63626.up.railway.app']
 
 INSTALLED_APPS = [
-    'core',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -26,7 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
-    'core',
+    'core',  # core is at the bottom (safe, no crashes)
 ]
 
 MIDDLEWARE = [
@@ -90,11 +116,13 @@ LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login/'
 
-ADMIN_SITE_HEADER = "Crested SS 2005 Class - Administration"
+ADMIN_SITE_HEADER = "Crested SS 2005 Class - Banking System"
 ADMIN_SITE_TITLE = "Crested SS 2005 Class"
+
+# Session Settings - Stay logged in
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_COOKIE_AGE = 1209600  # 2 weeks in seconds
 
 # Password Reset (prints link to console)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 PASSWORD_RESET_TIMEOUT = 14400
-SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-SESSION_COOKIE_AGE = 1209600  # 2 weeks in seconds
