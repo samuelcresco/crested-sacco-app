@@ -4,8 +4,8 @@ from datetime import datetime, timedelta
 
 # --- SHARE TYPES ---
 class ShareType(models.Model):
-    name = models.CharField(max_length=50, unique=True)  # Platinum, Golden, Silver, Ordinary
-    price = models.DecimalField(max_digits=12, decimal_places=2)  # Cost per share
+    name = models.CharField(max_length=50, unique=True)
+    price = models.DecimalField(max_digits=12, decimal_places=2)
     description = models.TextField(blank=True)
 
     def __str__(self):
@@ -19,7 +19,7 @@ class Member(models.Model):
     last_name = models.CharField(max_length=100, blank=True)
     phone_number = models.CharField(max_length=15)
     shares = models.ForeignKey(ShareType, on_delete=models.SET_NULL, null=True, blank=True, related_name='members')
-    share_balance = models.IntegerField(default=0)  # Number of shares owned
+    share_balance = models.IntegerField(default=0)
 
     def __str__(self):
         if self.first_name or self.last_name:
@@ -53,7 +53,11 @@ class Transaction(models.Model):
 
 # --- LOAN ---
 class Loan(models.Model):
-    STATUS_CHOICES = [('ACTIVE', 'Active'), ('PAID', 'Paid'), ('DEFAULTED', 'Defaulted')]
+    STATUS_CHOICES = [
+        ('ACTIVE', 'Active'),
+        ('PAID', 'Paid'),
+        ('DEFAULTED', 'Defaulted'),
+    ]
     member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='loans')
     amount = models.DecimalField(max_digits=12, decimal_places=2)
     interest_rate = models.DecimalField(max_digits=5, decimal_places=2, default=10.00)
@@ -77,3 +81,6 @@ class LoanPayment(models.Model):
     date_paid = models.DateTimeField(auto_now_add=True)
     is_penalty = models.BooleanField(default=False)
     due_date = models.DateTimeField()
+
+    def __str__(self):
+        return f"Payment for {self.loan.member.member_number} - {self.amount}"
