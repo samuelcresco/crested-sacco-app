@@ -40,7 +40,6 @@ def dashboard(request):
         
         full_name = f"{member.first_name} {member.last_name}".strip() or member.user.get_full_name() or member.user.username
         
-        # Shares
         share_type = member.shares.name if member.shares else "No Share Type"
         share_count = member.share_balance
         share_value = member.share_balance * member.shares.price if member.shares else 0
@@ -151,20 +150,29 @@ def register(request):
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         
-        try:
-            member = Member.objects.get(member_number=member_number)
-            if member.user:
-                error_message = "This member number is already linked to an account. Please login."
-            else:
-                user = User.objects.create_user(username=username, password=password)
-                member.user = user
-                member.first_name = first_name
-                member.last_name = last_name
-                member.save()
-                login(request, user)
-                return redirect('dashboard')
-        except Member.DoesNotExist:
-            error_message = "Member number not found. Please check with the SACCO admin."
+        # Debug: print what we received
+        print(f"Signup attempt: member_number={member_number}, username={username}")
+        
+        if not member_number:
+            error_message = "Member number is required. Please enter your member number."
+        else:
+            try:
+                member = Member.objects.get(member_number=member_number)
+                if member.user:
+                    error_message = "This member number is already linked to an account. Please login."
+                else:
+                    user = User.objects.create_user(username=username, password=password)
+                    member.user = user
+                    member.first_name = first_name
+                    member.last_name = last_name
+                    member.save()
+                    login(request, user)
+                    return redirect('dashboard')
+            except Member.DoesNotExist:
+                error_message = f"Member number '{member_number}' not found. Please check with the SACCO admin."
+            except Exception as e:
+                error_message = f"An error occurred: {str(e)}"
+    
     return render(request, 'registration/register.html', {'error': error_message})
 
 def custom_password_reset(request):
