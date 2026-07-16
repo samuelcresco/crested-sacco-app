@@ -1,50 +1,58 @@
+
 {% extends "admin/base_site.html" %}
 
 {% block extrahead %}
 {{ block.super }}
 <style>
-    .theme-toggle { display: none !important; }
-    #header .theme-toggle { display: none !important; }
-    .theme-toggle-wrapper { display: none !important; }
-    #header { background: linear-gradient(135deg, #0d1b2a, #1a3a5c) !important; padding: 15px 30px !important; }
-    #header h1 { color: white !important; font-size: 22px !important; font-weight: 600 !important; }
-    .forgot-password-container { text-align: center; margin-top: 15px; padding-top: 10px; border-top: 1px solid #e9ecef; }
-    .forgot-password-container a { color: #1a3a5c; text-decoration: none; font-weight: 500; }
-    .forgot-password-container a:hover { text-decoration: underline; }
-    .show-password-container { text-align: left; margin-top: 8px; }
-    .show-password-container input[type="checkbox"] { width: auto !important; margin-right: 5px !important; display: inline-block !important; }
-    .show-password-container label { font-size: 14px; color: #555; cursor: pointer; }
+    .theme-toggle, #header .theme-toggle, .theme-toggle-wrapper {
+        display: none !important;
+    }
+    #header {
+        background: linear-gradient(135deg, #0d1b2a, #1a3a5c) !important;
+        padding: 15px 30px !important;
+    }
+    #header h1 {
+        color: white !important;
+        font-size: 22px !important;
+        font-weight: 600 !important;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
-
-<!-- FORGOT PASSWORD LINK -->
-<div class="forgot-password-container">
-    <a href="/accounts/password_reset/">🔑 Forgot Password?</a>
+<div style="text-align: center; margin-top: 15px; padding-top: 10px; border-top: 1px solid #e9ecef;">
+    <a href="/accounts/password_reset/" style="color: #1a3a5c; text-decoration: none; font-weight: 500;">
+        🔑 Forgot Password?
+    </a>
 </div>
-
-<!-- SHOW PASSWORD TOGGLE -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    var pwd = document.getElementById('id_password');
-    if (pwd) {
-        var container = document.createElement('div');
-        container.className = 'show-password-container';
-        var chk = document.createElement('input');
-        chk.type = 'checkbox';
-        chk.id = 'show-pwd';
-        var lbl = document.createElement('label');
-        lbl.htmlFor = 'show-pwd';
-        lbl.textContent = '👁️ Show Password';
-        container.appendChild(chk);
-        container.appendChild(lbl);
-        pwd.parentNode.insertBefore(container, pwd.nextSibling);
-        chk.addEventListener('change', function() {
-            pwd.type = this.checked ? 'text' : 'password';
-        });
-    }
-});
+    document.addEventListener('DOMContentLoaded', function() {
+        var pwd = document.getElementById('id_password');
+        if (pwd) {
+            var c = document.createElement('div');
+            c.style.cssText = 'text-align: left; margin-top: 8px; margin-bottom: 10px;';
+            var chk = document.createElement('input');
+            chk.type = 'checkbox';
+            chk.id = 'show-pwd';
+            chk.style.cssText = 'width: auto; margin-right: 5px; display: inline-block;';
+            var lbl = document.createElement('label');
+            lbl.htmlFor = 'show-pwd';
+            lbl.textContent = '👁️ Show Password';
+            lbl.style.cssText = 'font-size: 14px; color: #555; cursor: pointer;';
+            c.appendChild(chk);
+            c.appendChild(lbl);
+            var parent = pwd.parentNode;
+            var submitRow = parent.querySelector('.submit-row');
+            if (submitRow) {
+                parent.insertBefore(c, submitRow);
+            } else {
+                parent.appendChild(c);
+            }
+            chk.addEventListener('change', function() {
+                pwd.type = this.checked ? 'text' : 'password';
+            });
+        }
+    });
 </script>
 {% endblock %}
