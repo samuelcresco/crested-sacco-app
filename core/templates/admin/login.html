@@ -1,0 +1,59 @@
+{% extends "admin/login.html" %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+    .theme-toggle, #header .theme-toggle, .theme-toggle-wrapper {
+        display: none !important;
+    }
+    #header {
+        background: linear-gradient(135deg, #0d1b2a, #1a3a5c) !important;
+        padding: 15px 30px !important;
+    }
+    #header h1 {
+        color: white !important;
+        font-size: 22px !important;
+        font-weight: 600 !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+
+<div style="text-align: center; margin-top: 15px; padding-top: 10px; border-top: 1px solid #e9ecef;">
+    <a href="/accounts/password_reset/" style="color: #1a3a5c; text-decoration: none; font-weight: 500;">
+        🔑 Forgot Password?
+    </a>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var pwd = document.getElementById('id_password');
+        if (pwd) {
+            var container = document.createElement('div');
+            container.style.cssText = 'text-align: left; margin-top: 8px; margin-bottom: 10px;';
+            var checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = 'show-pwd';
+            checkbox.style.cssText = 'width: auto; margin-right: 5px; display: inline-block;';
+            var label = document.createElement('label');
+            label.htmlFor = 'show-pwd';
+            label.textContent = '👁️ Show Password';
+            label.style.cssText = 'font-size: 14px; color: #555; cursor: pointer;';
+            container.appendChild(checkbox);
+            container.appendChild(label);
+            var parent = pwd.parentNode;
+            var submitRow = parent.querySelector('.submit-row');
+            if (submitRow) {
+                parent.insertBefore(container, submitRow);
+            } else {
+                parent.appendChild(container);
+            }
+            checkbox.addEventListener('change', function() {
+                pwd.type = this.checked ? 'text' : 'password';
+            });
+        }
+    });
+</script>
+{% endblock %}
