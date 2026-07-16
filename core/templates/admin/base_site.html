@@ -1,122 +1,50 @@
-
-
 {% extends "admin/base_site.html" %}
 
 {% block extrahead %}
 {{ block.super }}
 <style>
-    /* Remove theme toggles */
     .theme-toggle { display: none !important; }
     #header .theme-toggle { display: none !important; }
     .theme-toggle-wrapper { display: none !important; }
-    
-    /* Clean header */
-    #header {
-        background: linear-gradient(135deg, #0d1b2a, #1a3a5c) !important;
-        padding: 15px 30px !important;
-    }
-    #header h1 {
-        color: white !important;
-        font-size: 22px !important;
-        font-weight: 600 !important;
-    }
-    
-    /* Clean login box */
-    .login {
-        background: white !important;
-        border-radius: 12px !important;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.1) !important;
-        padding: 30px !important;
-    }
-    .login .form-row input {
-        padding: 10px !important;
-        border-radius: 8px !important;
-        border: 1px solid #ddd !important;
-    }
-    .login .submit-row input {
-        background: #1a3a5c !important;
-        border: none !important;
-        padding: 10px !important;
-        border-radius: 8px !important;
-        font-weight: 600 !important;
-    }
-    .login .submit-row input:hover {
-        background: #2d6a9f !important;
-    }
-    
-    /* Show Password toggle */
-    .show-password-container {
-        text-align: left;
-        margin-top: 8px;
-    }
-    .show-password-container input[type="checkbox"] {
-        width: auto !important;
-        margin-right: 5px !important;
-        display: inline-block !important;
-    }
-    .show-password-container label {
-        font-size: 14px;
-        color: #555;
-        cursor: pointer;
-    }
-    
-    /* Forgot Password link */
-    .forgot-password-container {
-        text-align: center;
-        margin-top: 15px;
-        padding-top: 10px;
-        border-top: 1px solid #e9ecef;
-    }
-    .forgot-password-container a {
-        color: #1a3a5c;
-        text-decoration: none;
-        font-weight: 500;
-    }
-    .forgot-password-container a:hover {
-        text-decoration: underline;
-    }
+    #header { background: linear-gradient(135deg, #0d1b2a, #1a3a5c) !important; padding: 15px 30px !important; }
+    #header h1 { color: white !important; font-size: 22px !important; font-weight: 600 !important; }
+    .forgot-password-container { text-align: center; margin-top: 15px; padding-top: 10px; border-top: 1px solid #e9ecef; }
+    .forgot-password-container a { color: #1a3a5c; text-decoration: none; font-weight: 500; }
+    .forgot-password-container a:hover { text-decoration: underline; }
+    .show-password-container { text-align: left; margin-top: 8px; }
+    .show-password-container input[type="checkbox"] { width: auto !important; margin-right: 5px !important; display: inline-block !important; }
+    .show-password-container label { font-size: 14px; color: #555; cursor: pointer; }
 </style>
 {% endblock %}
 
 {% block content %}
 {{ block.super }}
 
-<!-- Forgot Password Link -->
+<!-- FORGOT PASSWORD LINK -->
 <div class="forgot-password-container">
-    <a href="/accounts/password_reset/">Forgot Password?</a>
+    <a href="/accounts/password_reset/">🔑 Forgot Password?</a>
 </div>
 
+<!-- SHOW PASSWORD TOGGLE -->
 <script>
-    // Add Show Password toggle on admin login page
-    document.addEventListener('DOMContentLoaded', function() {
-        var passwordField = document.getElementById('id_password');
-        if (passwordField) {
-            // Create container
-            var container = document.createElement('div');
-            container.className = 'show-password-container';
-            
-            // Create checkbox
-            var checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.id = 'show-password-toggle';
-            
-            // Create label
-            var label = document.createElement('label');
-            label.htmlFor = 'show-password-toggle';
-            label.textContent = 'Show Password';
-            
-            // Add to page
-            container.appendChild(checkbox);
-            container.appendChild(label);
-            
-            // Insert after password field
-            passwordField.parentNode.insertBefore(container, passwordField.nextSibling);
-            
-            // Toggle password visibility
-            checkbox.addEventListener('change', function() {
-                passwordField.type = this.checked ? 'text' : 'password';
-            });
-        }
-    });
+document.addEventListener('DOMContentLoaded', function() {
+    var pwd = document.getElementById('id_password');
+    if (pwd) {
+        var container = document.createElement('div');
+        container.className = 'show-password-container';
+        var chk = document.createElement('input');
+        chk.type = 'checkbox';
+        chk.id = 'show-pwd';
+        var lbl = document.createElement('label');
+        lbl.htmlFor = 'show-pwd';
+        lbl.textContent = '👁️ Show Password';
+        container.appendChild(chk);
+        container.appendChild(lbl);
+        pwd.parentNode.insertBefore(container, pwd.nextSibling);
+        chk.addEventListener('change', function() {
+            pwd.type = this.checked ? 'text' : 'password';
+        });
+    }
+});
 </script>
 {% endblock %}
