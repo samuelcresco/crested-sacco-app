@@ -77,3 +77,7 @@ LOGOUT_REDIRECT_URL = '/login/'
 
 ADMIN_SITE_HEADER = "Crested SS 2005 Class - Banking System"
 ADMIN_SITE_TITLE = "Crested SS 2005 Class"
+# CSRF and Host Settings
+CSRF_TRUSTED_ORIGINS = ['https://web-production-63626.up.railway.app']
+ALLOWED_HOSTS = ['*', 'web-production-63626.up.railway.app']
+
